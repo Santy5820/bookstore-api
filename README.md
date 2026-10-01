@@ -13,20 +13,20 @@ cp .env.example .env   # ajusta MONGO_URI
 ## Ejecución
 
 ```bash
-npm run dev            # desarrollo con recarga
+npm run dev            # desarrollo
 npm run build && npm start   # producción
 ```
 
-## Endpoints del módulo demo
+## Endpoints
 
-Base URL: `http://localhost:3000/api/v1/demo`
+Base URL: `http://localhost:3000/api/v1`
 
-| Método | Ruta   | Descripción                  |
-| ------ | ------ | ---------------------------- |
-| POST   | /      | Crea un registro             |
-| GET    | /      | Lista todos los registros    |
-| GET    | /:id   | Obtiene un registro por id   |
-| PUT    | /:id   | Actualiza un registro        |
-| DELETE | /:id   | Elimina un registro          |
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| POST | `/authors` | Crea un autor |
+| GET | `/authors` | Lista autores |
+| GET | `/authors/:id` | Consulta un autor |
+| PUT | `/authors/:id` | Actualiza un autor |
+| DELETE | `/authors/:id` | Elimina un autor |
 
 Health check: `GET /health`
