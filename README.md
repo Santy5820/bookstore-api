@@ -28,5 +28,10 @@ Base URL: `http://localhost:3000/api/v1`
 | GET | `/authors/:id` | Consulta un autor |
 | PUT | `/authors/:id` | Actualiza un autor |
 | DELETE | `/authors/:id` | Elimina un autor |
+| POST | `/books` | Crea un libro |
+| GET | `/books` | Lista libros |
+| GET | `/books/:id` | Consulta un libro |
+| PUT | `/books/:id` | Actualiza un libro |
+| DELETE | `/books/:id` | Elimina un libro |
 
 Health check: `GET /health`

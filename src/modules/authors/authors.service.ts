@@ -2,10 +2,12 @@ import { ObjectId } from "mongodb";
 import { Author, AuthorDTO } from "./authors.model";
 import { AuthorsRepository } from "./authors.repository";
 import { BadRequestError, NotFoundError } from "../../shared/errors/AppError";
+import { BooksRepository } from "../books/books.repository";
 
 export class AuthorsService {
 
     private readonly authorsRepository = new AuthorsRepository();
+    private readonly booksRepository = new BooksRepository();
 
     async create(data: AuthorDTO): Promise<Author> {
         const name = this.requireString(data?.name, "name");
@@ -54,7 +56,12 @@ export class AuthorsService {
     }
 
     async delete(id: string): Promise<void> {
-        const deleted = await this.authorsRepository.delete(this.toObjectId(id));
+        const authorId = this.toObjectId(id);
+        if (await this.booksRepository.hasByAuthorId(authorId)) {
+            throw new BadRequestError("No se puede eliminar un autor que tiene libros asociados");
+        }
+
+        const deleted = await this.authorsRepository.delete(authorId);
         if (!deleted) {
             throw new NotFoundError("Autor no encontrado");
         }
