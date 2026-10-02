@@ -1,6 +1,7 @@
 import { Collection, ObjectId } from "mongodb";
 import { getDb } from "../../config/database";
 import { Book } from "./books.model";
+import { BookWithAuthor } from "./books.model"
 
 export class BooksRepository {
     private collection(): Collection<Book> {
@@ -47,4 +48,47 @@ export class BooksRepository {
         const result = await this.collection().deleteOne({ _id: id });
         return result.deletedCount === 1;
     }
+
+    async findAllWithAuthor(): Promise<BookWithAuthor[]> {
+        return this.collection()
+            .aggregate<BookWithAuthor>([
+                ...this.authorLookupStages(),
+                { $sort: { createdAt: -1 } },
+            ])
+            .toArray();
+    }
+
+    async findByIdWithAuthor(id: ObjectId): Promise<BookWithAuthor | null> {
+        const result = await this.collection()
+            .aggregate<BookWithAuthor>([
+                { $match: { _id: id } },
+                ...this.authorLookupStages(),
+            ])
+            .toArray();
+        return result[0] ?? null;
+    }
+
+    private authorLookupStages(): object[] {
+        return [
+            {
+                $lookup: {
+                    from: "authors",
+                    localField: "authorId",
+                    foreignField: "_id",
+                    as: "author",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$author",
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
+            {
+                // Se omite authorId de la respuesta: el autor ya viene embebido.
+                $project: { authorId: 0 },
+            },
+        ];
+    }
+
 }
