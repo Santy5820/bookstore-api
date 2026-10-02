@@ -33,5 +33,10 @@ Base URL: `http://localhost:3000/api/v1`
 | GET | `/books/:id` | Consulta un libro |
 | PUT | `/books/:id` | Actualiza un libro |
 | DELETE | `/books/:id` | Elimina un libro |
+| POST | `/loans` | Registra un préstamo |
+| GET | `/loans` | Lista préstamos |
+| GET | `/loans/:id` | Consulta un préstamo |
+| PUT | `/loans/:id` | Actualiza o devuelve un préstamo |
+| DELETE | `/loans/:id` | Elimina un préstamo |
 
 Health check: `GET /health`
